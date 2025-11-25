@@ -145,7 +145,7 @@ build_rootfs(){
 
 }
 
-QEMU=qemu-system-riscv64-9
+QEMU=qemu-system-riscv64
 machine_arg="-machine virt,aia=aplic-imsic,aia-guests=4  -cpu rv64 -m 1024 $SMP -nographic"
 kernel_img="-bios opensbi-riscv64-generic-fw_dynamic.bin -kernel arch/riscv/boot/Image"
 
