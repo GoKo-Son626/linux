@@ -159,7 +159,7 @@ kernel_args="$rootfs_arg $kernel_arg $debug_arg $crash_arg $debug_arg"
 
 # devices
 device_arg+=" -device riscv-iommu-pci,addr=1.0"
-device_arg+=" -drive if=none,file=$rootfs_image,id=hd0 -device virtio-blk-pci,drive=hd0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on" 
+device_arg+=" -drive if=none,file=$rootfs_image,format=raw,id=hd0 -device virtio-blk-pci,drive=hd0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on" 
 device_arg+=" -device virtio-net-device,netdev=usernet -netdev user,id=usernet"
 device_arg+=" --fsdev local,id=kmod_dev,path=./kmodules,security_model=none -device virtio-9p-device,fsdev=kmod_dev,mount_tag=kmod_mount"
 
