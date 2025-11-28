@@ -158,12 +158,19 @@ debug_arg="loglevel=8 sched_debug"
 kernel_args="$rootfs_arg $kernel_arg $debug_arg $crash_arg $debug_arg"
 
 # devices
-device_arg+=" -device riscv-iommu-pci,addr=1.0"
-device_arg+=" -drive if=none,file=$rootfs_image,format=raw,id=hd0 -device virtio-blk-pci,drive=hd0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on" 
-device_arg+=" -device virtio-net-device,netdev=usernet -netdev user,id=usernet"
+device_arg+=" -device riscv-iommu-pci,addr=1.0,ats=on"
+# device_arg+=" -drive if=none,file=$rootfs_image,format=raw,id=hd0"
+# device_arg+=" -device virtio-blk-pci,drive=hd0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on" 
+device_arg+=" -drive if=none,file=$rootfs_image,format=raw,id=hd0"
+device_arg+=" -device virtio-blk-pci,drive=hd0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on" 
+# device_arg+=" -device virtio-net-device,netdev=usernet -netdev user,id=usernet"
+device_arg+=" -device virtio-net-pci,netdev=usernet,id=net0,disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on"
+device_arg+=" -netdev user,id=usernet"
 device_arg+=" --fsdev local,id=kmod_dev,path=./kmodules,security_model=none -device virtio-9p-device,fsdev=kmod_dev,mount_tag=kmod_mount"
+device_arg+=" -device qemu-xhci,id=xhci"
 
-guest_arg=" -drive if=none,file=guest.ext4,read-only=off,id=nvme1 -device nvme,serial=87654321,drive=nvme1,addr=4.0"
+#guest_arg=" -drive if=none,file=guest.ext4,format=raw,read-only=off,id=nvme1 -device nvme,serial=87654321,drive=nvme1"
+guest_arg=" -drive if=none,file=guest.ext4,format=raw,read-only=off,id=nvme1 -device nvme,serial=87654321,drive=nvme1"
 
 # add "nokaslr" into kernel command line or disable CONFIG_RANDOMIZE_BASE
 run_qemu_debian(){
